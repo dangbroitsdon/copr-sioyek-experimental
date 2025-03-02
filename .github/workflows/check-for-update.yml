@@ -12,6 +12,7 @@ jobs:
     outputs:
       hash: ${{ steps.get_latest_commit.outputs.hash }}
       short_hash: ${{ steps.compare_hashes.outputs.short_hash }}
+      match: ${{ steps.compare_hashes.outputs.match }}
 
     steps:
       - name: Checkout master
