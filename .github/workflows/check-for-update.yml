@@ -1,0 +1,70 @@
+name: Check for Update
+
+on:
+  schedule:
+      - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  check-for-update:
+    runs-on: ubuntu-latest
+
+    outputs:
+      hash: ${{ steps.get_latest_commit.outputs.hash }}
+      short_hash: ${{ steps.compare_hashes.outputs.short_hash }}
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v4
+
+      - name: Get latest commit hash
+        id: get_latest_commit
+        uses: nmbgeek/github-action-get-latest-commit@main
+        with:
+          owner: ahrm
+          repo: sioyek
+          branch: development
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get current commit hash
+        id: get_current_commit
+        run: |
+          global_commit_var=$(cat sioyek-experimental.spec | sed -n '4p')
+          echo "current_commit=$(echo ${global_commit_var:26:40})" >> $GITHUB_OUTPUT
+
+      - name: Compare commit hashes
+        id: compare_hashes
+        run: |
+          latest_commit_hash=${{ steps.get_latest_commit.outputs.hash }}
+          current_commit_hash=${{ steps.get_current_commit.outputs.current_commit }}
+
+          echo "short_hash=$(echo ${latest_commit_hash:0:7})" >> $GITHUB_OUTPUT
+
+          if [ "$latest_commit_hash" == "$current_commit_hash" ]; then
+            echo "match=1" >> $GITHUB_OUTPUT
+          else
+            echo "match=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Replace commit hash in specfile
+        if: steps.compare_hashes.outputs.match == 0
+        run: |
+          sed -i 's/latest_git_commit .*/latest_git_commit ${{ steps.get_latest_commit.outputs.hash }}/' sioyek-experimental.spec
+
+      - name: Push modified specfile
+        if: steps.compare_hashes.outputs.match == 0
+        uses: wranders/commit-action@v0
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          message: "Update to latest commit"
+          files: |
+            sioyek-experimental.spec
+
+  dispatch-to-rpm-builder:
+    uses: ./.github/workflows/rpm-builder.yml
+    needs: [check-for-update]
+    with:
+      latest_commit_hash: "${{ needs.check-for-update.outputs.hash }}"
+      shortened_commit_hash: "${{ needs.check-for-update.outputs.short_hash }}"
+    if: needs.check-for-update.outputs.match == 0

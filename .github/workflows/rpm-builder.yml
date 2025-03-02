@@ -1,0 +1,51 @@
+name: Latest Experimental RPM Builder
+
+on:
+  workflow_call:
+    inputs:
+      latest_commit_hash:
+        required: true
+        type: string
+      shortened_commit_hash:
+        required: true
+        type: string
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+      options: --cap-add=SYS_ADMIN --privileged
+    steps:
+      - name: Install mock and git
+        run: dnf install -y mock git
+
+      - name: Checkout master
+        uses: actions/checkout@v4
+
+      - name: Fix dir perms
+        run: git config --global --add safe.directory `pwd`
+
+      - name: Build RPMS
+        id: rpm_build
+        run: |
+          curl -L https://github.com/ahrm/sioyek/archive/${{ inputs.latest_commit_hash }}/sioyek-${{ inputs.latest_commit_hash }}.tar.gz --output sioyek-${{ inputs.latest_commit_hash }}.tar.gz
+
+          groupadd -f -g 135 -r mock
+
+          usermod -aG mock $(whoami)
+
+          git pull
+
+          mock -r fedora-41-x86_64 --verbose --buildsrpm --spec=sioyek-experimental.spec --sources=sioyek-${{ inputs.latest_commit_hash }}.tar.gz --resultdir=.
+          mock -r fedora-41-x86_64 --verbose --rebuild sioyek-experimental-*.src.rpm --resultdir=.
+
+      - name: Publish RPMS
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: "[Experimental] Sioyek v3.0.0+git${{ inputs.shortened_commit_hash }}"
+          tag: v3.0.0+git${{ inputs.shortened_commit_hash }}
+          prerelease: false
+          artifacts: "*.rpm"
+          body: "Built from commit https://github.com/ahrm/sioyek/commit/${{ inputs.latest_commit_hash }}"
