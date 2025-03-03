@@ -1,7 +1,7 @@
 Name:       sioyek-experimental
 
 %global __brp_check_rpaths %{nil}
-%global latest_git_commit 9da3a3b60b7fc26f93a09ad272fe439bbc77f23f
+%global latest_git_commit c34930d0e32e78eaead9a65f15503a3648ce2799
 %global shortened_git_commit %(c=%{latest_git_commit}; echo ${c:0:7})
 
 Version:    3.0.0+git%{shortened_git_commit}
