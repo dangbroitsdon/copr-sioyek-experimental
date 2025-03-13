@@ -30,7 +30,7 @@ jobs:
       - name: Get current commit hash
         id: get_current_commit
         run: |
-          global_commit_var=$(cat sioyek-experimental.spec | sed -n '4p')
+          global_commit_var=$(cat sioyek-experimental.spec | sed -n '2p')
           echo "current_commit=$(echo ${global_commit_var:26:40})" >> $GITHUB_OUTPUT
 
       - name: Compare commit hashes
