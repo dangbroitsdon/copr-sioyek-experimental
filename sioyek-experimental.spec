@@ -1,5 +1,5 @@
 %global         __brp_check_rpaths %{nil}
-%global         latest_git_commit b3575d9634d6c305cdf555a383e019a1e9013f2a
+%global         latest_git_commit 73ad836320fa2df49c7e481b925d1281aae2fbbc
 %global         shortened_git_commit %(c=%{latest_git_commit}; echo ${c:0:7})
 
 Name:           sioyek-experimental
