@@ -7,21 +7,11 @@ Version:        3.0.0+git%{shortened_git_commit}
 Release:        1%?dist
 Summary:        PDF viewer with a focus on textbooks and research papers, experimental version
 Url:            https://github.com/ahrm/sioyek
-Source0:        sioyek-%{latest_git_commit}.tar.gz
+Source0:        https://github.com/ahrm/sioyek/archive/%{latest_git_commit}/sioyek-%{latest_git_commit}.tar.gz
 License:        GPL-3.0-or-later
 Packager:       Donavan Campbell <vncvltvred@proton.me>
 
-BuildRequires:  qt6-qtbase-devel
-BuildRequires:  qt6-qtbase-static
-BuildRequires:  qt6-qtdeclarative-devel
-BuildRequires:  qt6-qt3d-devel
-BuildRequires:  qt6-qtspeech-devel
-BuildRequires:  qt6-qtsvg-devel
-BuildRequires:  mesa-libGL-devel
-BuildRequires:  glfw-devel
-BuildRequires:  mupdf-devel
-BuildRequires:  zlib-ng-compat-devel
-BuildRequires:  sqlite-devel
+BuildRequires:  qt6-qtbase-devel qt6-qtbase-static qt6-qtdeclarative-devel qt6-qt3d-devel qt6-qtspeech-devel qt6-qtsvg-devel mesa-libGL-devel glfw-devel mupdf-devel zlib-ng-compat-devel sqlite-devel
 
 %description
 Sioyek is a PDF viewer with a focus on textbooks and research papers, based on the development branch.
@@ -61,6 +51,9 @@ cp -r pdf_viewer/shaders %{buildroot}%{_datadir}/sioyek
 
 
 %changelog
+* Wed Mar 31 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0-git4ee8831-1
+- misc changes
+
 * Wed Mar 12 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0-gitb3575d9-1
 - Further cleanup
 
