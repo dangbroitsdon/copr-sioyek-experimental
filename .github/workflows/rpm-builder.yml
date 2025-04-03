@@ -29,6 +29,8 @@ jobs:
       - name: Build RPMS
         id: rpm_build
         run: |
+          curl -L https://github.com/ahrm/sioyek/archive/${{ inputs.latest_commit_hash }}/sioyek-${{ inputs.latest_commit_hash }}.tar.gz --output sioyek-${{ inputs.latest_commit_hash }}.tar.gz
+          
           groupadd -f -g 135 -r mock
 
           usermod -aG mock $(whoami)
