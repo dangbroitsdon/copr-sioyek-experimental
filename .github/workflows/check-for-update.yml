@@ -9,11 +9,6 @@ jobs:
   check-for-update:
     runs-on: ubuntu-latest
 
-    outputs:
-      hash: ${{ steps.get_latest_commit.outputs.hash }}
-      short_hash: ${{ steps.compare_hashes.outputs.short_hash }}
-      match: ${{ steps.compare_hashes.outputs.match }}
-
     steps:
       - name: Checkout master
         uses: actions/checkout@v4
@@ -61,11 +56,3 @@ jobs:
           message: "Update to latest commit"
           files: |
             sioyek-experimental.spec
-
-  dispatch-to-rpm-builder:
-    uses: ./.github/workflows/rpm-builder.yml
-    needs: [check-for-update]
-    with:
-      latest_commit_hash: "${{ needs.check-for-update.outputs.hash }}"
-      shortened_commit_hash: "${{ needs.check-for-update.outputs.short_hash }}"
-    if: needs.check-for-update.outputs.match == 0
