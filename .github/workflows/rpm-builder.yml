@@ -29,6 +29,10 @@ jobs:
       - name: Build RPMS
         id: rpm_build
         run: |
+          groupadd -f -g 135 -r mock
+
+          usermod -aG mock $(whoami)
+          
           git pull
 
           mock -r fedora-41-x86_64 --buildsrpm --spec=sioyek-experimental.spec --resultdir=. --enable-network
