@@ -37,7 +37,7 @@ jobs:
           
           git pull
 
-          mock -r fedora-41-x86_64 --buildsrpm --spec=sioyek-experimental.spec --resultdir=. --enable-network
+          mock -r fedora-41-x86_64 --buildsrpm --spec=sioyek-experimental.spec --sources=sioyek-${{ inputs.latest_commit_hash }}.tar.gz --resultdir=.
           mock -r fedora-41-x86_64 --rebuild sioyek-experimental-*.src.rpm --resultdir=.
 
       - name: Publish RPMS
