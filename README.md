@@ -1,1 +1,1 @@
-Autonomously builds an RPM (Fedora Linux) of [sioyek](https://github.com/ahrm/sioyek/tree/development) development branch.
+Builds are now hosted on this [copr repo](https://copr.fedorainfracloud.org/coprs/vncvltvred/sioyek/)
