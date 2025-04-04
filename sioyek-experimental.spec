@@ -49,23 +49,23 @@ cp -r pdf_viewer/shaders %{buildroot}%{_datadir}/sioyek
 %{_datadir}/sioyek/shaders/*
 
 %changelog
-* Fri Apr 04 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0-git3172c42-1
+* Fri Apr 04 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+git3172c42-1
 - simple changes in line with fedora packaging guidelines
 
-* Mon Mar 31 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0-git4ee8831-1
+* Mon Mar 31 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+git4ee8831-1
 - misc changes
 
-* Wed Mar 12 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0-gitb3575d9-1
+* Wed Mar 12 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+gitb3575d9-1
 - Further cleanup
 
-* Fri Feb 28 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0-git986af1e-4
+* Fri Feb 28 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+git986af1e-4
 - Cleanup build and file section
 
-* Wed Feb 26 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0-git986af1e-3
+* Wed Feb 26 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+git986af1e-3
 - Fix icon not being able to be replaced by papirus-icons
 
-* Tue Feb 25 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0-git986af1e-2
+* Tue Feb 25 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+git986af1e-2
 - Fix missing icon
 
-* Fri Feb 21 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0-git986af1e-1
+* Fri Feb 21 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+git986af1e-1
 - First release and initial testing
