@@ -2,56 +2,56 @@
 %define         shortened_git_commit %(c=%{latest_git_commit}; echo ${c:0:7})
 %define         date %(date +%Y%m%d)
 %define         hour %(date +%H)
+%define         base_pkg_name sioyek
 
-Name:           sioyek-experimental
+Name:           %{base_pkg_name}-experimental
 Version:        3.0.0+%{date}.%{hour}.%{shortened_git_commit}
-Release:        1%?dist
-Summary:        PDF viewer with a focus on textbooks and research papers, experimental version
-Url:            https://github.com/ahrm/sioyek
-Source0:        https://github.com/ahrm/sioyek/archive/%{latest_git_commit}/sioyek-%{latest_git_commit}.tar.gz
-Patch1:         https://github.com/dangbroitsdon/sioyek-experimental-ci/cmake.patch
+Release:        1%{?dist}
+Summary:        PDF viewer with a focus on textbooks and research papers.
+Url:            https://github.com/ahrm/%{base_pkg_name}
+Source0:        https://github.com/ahrm/%{base_pkg_name}/archive/%{latest_git_commit}/%{base_pkg_name}-%{latest_git_commit}.tar.gz
+Patch1:         https://github.com/dangbroitsdon/copr-%{base_pkg_name}-experimental/cmake.patch
 License:        GPL-3.0-or-later
 
-BuildRequires:  qt6-qtbase-devel qt6-qtbase-static qt6-qtdeclarative-devel qt6-qt3d-devel qt6-qtspeech-devel qt6-qtsvg-devel mesa-libGL-devel glfw-devel mupdf-devel zlib-ng-compat-devel sqlite-devel
+BuildRequires:  qt6-qtbase-devel qt6-qtbase-static qt6-qtdeclarative-devel qt6-qt3d-devel qt6-qtspeech-devel qt6-qtsvg-devel mesa-libGL-devel glfw-devel mupdf-devel zlib-ng-compat-devel sqlite-devel gcc desktop-file-utils
 
 %description
-PDF viewer with a focus on textbooks and research papers.
+Sioyek is a PDF viewer with a focus on textbooks and research papers.
 
 %prep
-%autosetup -p1 -n sioyek-%{latest_git_commit}
+%autosetup -p1 -n %{base_pkg_name}-%{latest_git_commit}
 
 %build
-# Allows papirus-icons to replace the icon
-sed -i 's/^Icon=.*/Icon=sioyek/' resources/sioyek.desktop
-
 %cmake -DCMAKE_BUILD_TYPE=Release
 %cmake_build
 
 %install
-install -Dm 755 -p redhat-linux-build/sioyek -t %{buildroot}%{_bindir}
-install -Dm 644 -p pdf_viewer/prefs.config pdf_viewer/keys.config -t %{buildroot}%{_sysconfdir}/sioyek
-install -Dm 644 -p resources/sioyek.desktop -t %{buildroot}%{_datadir}/applications
-install -Dm 644 -p resources/sioyek-icon-linux.png %{buildroot}%{_datadir}/pixmaps/sioyek.png
-install -Dm 644 -p tutorial.pdf -t %{buildroot}%{_datadir}/sioyek
-install -Dm 644 -p resources/sioyek.1 -t %{buildroot}%{_mandir}/man1
+install -Dm 755 -p redhat-linux-build/%{base_pkg_name} -t %{buildroot}%{_bindir}
+install -Dm 644 -p pdf_viewer/prefs.config pdf_viewer/keys.config -t %{buildroot}%{_sysconfdir}/%{base_pkg_name}
+install -Dm 644 -p resources/%{base_pkg_name}.desktop -t %{buildroot}%{_datadir}/applications
+install -Dm 644 -p resources/%{base_pkg_name}-icon-linux.png %{buildroot}%{_datadir}/pixmaps/%{base_pkg_name}.png
+install -Dm 644 -p tutorial.pdf -t %{buildroot}%{_datadir}/%{base_pkg_name}
+install -Dm 644 -p resources/%{base_pkg_name}.1 -t %{buildroot}%{_mandir}/man1
 
-cp -r pdf_viewer/shaders %{buildroot}%{_datadir}/sioyek
+desktop-file-install --delete-original --set-icon=%{base_pkg_name} --dir=%{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/%{base_pkg_name}.desktop
+
+cp -r pdf_viewer/shaders %{buildroot}%{_datadir}/%{base_pkg_name}
 
 %files
 %license LICENSE
 %doc README.md
-%{_bindir}/sioyek
-%{_datadir}/applications/sioyek.desktop
-%{_datadir}/pixmaps/sioyek.png
-%{_mandir}/man1/sioyek.1.gz
-%dir %{_sysconfdir}/sioyek
-%config(noreplace) %{_sysconfdir}/sioyek/*
-%dir %{_datadir}/sioyek
-%{_datadir}/sioyek/tutorial.pdf
-%{_datadir}/sioyek/shaders/*
+%{_bindir}/%{base_pkg_name}
+%{_datadir}/applications/%{base_pkg_name}.desktop
+%{_datadir}/pixmaps/%{base_pkg_name}.png
+%{_mandir}/man1/%{base_pkg_name}.1.gz
+%dir %{_sysconfdir}/%{base_pkg_name}
+%config(noreplace) %{_sysconfdir}/%{base_pkg_name}/*
+%dir %{_datadir}/%{base_pkg_name}
+%{_datadir}/%{base_pkg_name}/tutorial.pdf
+%{_datadir}/%{base_pkg_name}/shaders/*
 
 %changelog
-* Sat Apr 05 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+git957f1dd-1
+* Sat Apr 05 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+20250405.18.957f1dd-1
 - update versioning
 
 * Fri Apr 04 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+git3172c42-1
