@@ -1,9 +1,10 @@
 %define         latest_git_commit 957f1ddfdc7f1599997a5fe3d1047553c6138d0b
 %define         shortened_git_commit %(c=%{latest_git_commit}; echo ${c:0:7})
 %define         date %(date +%Y-%m-%d)
+%define         hour %(date +%H)
 
 Name:           sioyek-experimental
-Version:        3.0.0-%{date}.%{shortened_git_commit}
+Version:        3.0.0-%{date}.%{hour}.%{shortened_git_commit}
 Release:        1%?dist
 Summary:        PDF viewer with a focus on textbooks and research papers, experimental version
 Url:            https://github.com/ahrm/sioyek
