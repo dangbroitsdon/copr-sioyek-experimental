@@ -1,4 +1,4 @@
-%define         latest_git_commit 3172c42a565381b72fffb390e444f65ff988aa61
+%define         latest_git_commit 957f1ddfdc7f1599997a5fe3d1047553c6138d0b
 %define         shortened_git_commit %(c=%{latest_git_commit}; echo ${c:0:7})
 
 Name:           sioyek-experimental
