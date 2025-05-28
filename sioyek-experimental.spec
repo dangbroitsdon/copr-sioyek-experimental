@@ -1,4 +1,4 @@
-%define         latest_git_commit 280fdb65ad38e798283101c531b90f809d51b8c1
+%define         latest_git_commit 8038f1308563a106a014db2df70cf695e83581b7
 %define         shortened_git_commit %(c=%{latest_git_commit}; echo ${c:0:7})
 %define         date %(date +%Y%m%d)
 %define         hour %(date +%H)
