@@ -1,12 +1,12 @@
-%define         latest_git_commit 8d173d993738d78559da035cc051f2eb40df41e6
-%define         shortened_git_commit %(c=%{latest_git_commit}; echo ${c:0:7})
-%define         date %(date +%Y%m%d)
-%define         hour %(date +%H)
-%define         base_pkg_name sioyek
+%global         latest_git_commit 8d173d993738d78559da035cc051f2eb40df41e6
+%global         shortened_git_commit %(c=%{latest_git_commit}; echo ${c:0:7})
+%global         date %(date +%Y%m%d)
+%global         hour %(date +%H)
+%global         base_pkg_name sioyek
 
 Name:           %{base_pkg_name}-experimental
 Version:        3.0.0+%{date}.%{hour}.%{shortened_git_commit}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        PDF viewer with a focus on textbooks and research papers.
 Url:            https://github.com/ahrm/%{base_pkg_name}
 Source0:        https://github.com/ahrm/%{base_pkg_name}/archive/%{latest_git_commit}/%{base_pkg_name}-%{latest_git_commit}.tar.gz
@@ -51,6 +51,9 @@ cp -r pdf_viewer/shaders %{buildroot}%{_datadir}/%{base_pkg_name}
 %{_datadir}/%{base_pkg_name}/shaders/*
 
 %changelog
+* Sun Jul 27 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+20250727.13.8d173d9-2
+- build against mupdf 1.26 and minor change
+
 * Sat Apr 05 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+20250405.18.957f1dd-1
 - update versioning
 
