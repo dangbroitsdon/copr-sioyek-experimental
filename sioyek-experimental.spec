@@ -1,4 +1,4 @@
-%global         latest_git_commit 02f47e758e813eaefe713bdbb0eaa22a9467373c
+%global         latest_git_commit b4858cb560e6b0dff995e5b59402f88c4c5ad699
 %global         shortened_git_commit %(c=%{latest_git_commit}; echo ${c:0:7})
 %global         date %(date +%Y%m%d)
 %global         hour %(date +%H)
