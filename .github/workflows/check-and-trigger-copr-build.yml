@@ -1,8 +1,8 @@
-name: Check for Update
+name: Check and Trigger Sioyek Build (COPR)
 
 on:
   schedule:
-      - cron: '0 */1 * * *'
+      - cron: '0 16 * * *'
   workflow_dispatch:
 
 jobs:
@@ -56,3 +56,27 @@ jobs:
           message: "Update to latest commit"
           files: |
             sioyek-experimental.spec
+            
+  trigger-copr-build:
+    runs-on: ubuntu-latest
+    container: fedora:latest
+
+    needs: [check-for-update]
+    if: needs.check-for-update.outputs._match == 0
+
+    steps:
+      - name: Install copr-cli package
+        run: dnf install -y copr-cli
+
+      - name: Trigger COPR Build
+        run: |
+          mkdir ~/.config
+          tee ~/.config/copr > /dev/null <<EOF
+          [copr-cli]
+          login = ${{ secrets.COPR_LOGIN }}
+          username = vncvltvred
+          token = ${{ secrets.COPR_TOKEN }}
+          copr_url = https://copr.fedorainfracloud.org
+          EOF
+
+          copr-cli buildscm --clone-url https://github.com/dangbroitsdon/copr-sioyek-experimental --subdir . --spec sioyek-experimental.spec --timeout 72000 --nowait vncvltvred/sioyek
