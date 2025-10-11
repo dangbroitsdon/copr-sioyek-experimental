@@ -14,19 +14,13 @@ Url:            https://github.com/ahrm/%{base_pkg_name}
 Source:         https://github.com/ahrm/%{base_pkg_name}/archive/%{latest_git_commit}/%{base_pkg_name}-%{latest_git_commit}.tar.gz
 License:        GPL-3.0-or-later
 
-BuildRequires: pkgconfig(Qt6Core) pkgconfig(Qt6Network) pkgconfig(Qt6OpenGL) pkgconfig(Qt63DCore) pkgconfig(Qt6Qml) pkgconfig(Qt6QuickControls2) pkgconfig(Qt6QuickWidgets) pkgconfig(Qt6Svg) pkgconfig(Qt6TextToSpeech) pkgconfig(Qt6Widgets) pkgconfig(Qt6OpenGLWidgets) pkgconfig(zlib) pkgconfig(sqlite3) pkgconfig(harfbuzz) pkgconfig(glfw3) pkgconfig(dri) gcc-c++ desktop-file-utils 
-
-%if %{undefined suse_version}
-BuildRequires: qt6-qtdeclarative-devel mupdf-devel qt6-qtbase-private-devel qt6-qtbase-static
-%else
-BuildRequires: qt6-platformsupport-devel-static mupdf-devel-static qt6-gui-private-devel 
-%endif
+BuildRequires: qt6-qtdeclarative-devel mupdf-devel qt6-qtbase-private-devel qt6-qtbase-static pkgconfig(Qt6Core) pkgconfig(Qt6Network) pkgconfig(Qt6OpenGL) pkgconfig(Qt63DCore) pkgconfig(Qt6Qml) pkgconfig(Qt6QuickControls2) pkgconfig(Qt6QuickWidgets) pkgconfig(Qt6Svg) pkgconfig(Qt6TextToSpeech) pkgconfig(Qt6Widgets) pkgconfig(Qt6OpenGLWidgets) pkgconfig(zlib) pkgconfig(sqlite3) pkgconfig(harfbuzz) pkgconfig(glfw3) pkgconfig(dri) gcc-c++ desktop-file-utils 
 
 %description
 Sioyek is a PDF viewer with a focus on textbooks and research papers.
 
 %prep
-%autosetup -n %{base_pkg_name}-%{latest_git_commit}
+%autosetup -n %{base_pkg_name}-%{latest_git_commit} %if %{defined suse_version} -p1 %endif
 
 %build
 %cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_SKIP_RPATH=1
@@ -58,9 +52,6 @@ cp -r pdf_viewer/shaders %{buildroot}%{_datadir}/%{base_pkg_name}
 %{_datadir}/%{base_pkg_name}/shaders/*
 
 %changelog
-* Sun Jul 27 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+20250727.13.8d173d9-2
-- start building for opensuse
-
 * Sun Jul 27 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+20250727.13.8d173d9-2
 - build against mupdf 1.26 and minor change
 
