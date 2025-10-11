@@ -20,7 +20,7 @@ BuildRequires: qt6-qtdeclarative-devel mupdf-devel qt6-qtbase-private-devel qt6-
 Sioyek is a PDF viewer with a focus on textbooks and research papers.
 
 %prep
-%autosetup -n %{base_pkg_name}-%{latest_git_commit} %if %{defined suse_version} -p1 %endif
+%autosetup -n %{base_pkg_name}-%{latest_git_commit}
 
 %build
 %cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_SKIP_RPATH=1
