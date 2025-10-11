@@ -4,25 +4,32 @@
 %global         hour %(date +%H)
 %global         base_pkg_name sioyek
 
+%define _disable_source_fetch 0
+
 Name:           %{base_pkg_name}-experimental
 Version:        3.0.0+%{date}.%{hour}.%{shortened_git_commit}
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        PDF viewer with a focus on textbooks and research papers.
 Url:            https://github.com/ahrm/%{base_pkg_name}
-Source0:        https://github.com/ahrm/%{base_pkg_name}/archive/%{latest_git_commit}/%{base_pkg_name}-%{latest_git_commit}.tar.gz
-Patch1:         https://github.com/dangbroitsdon/copr-%{base_pkg_name}-experimental/cmake.patch
+Source:         https://github.com/ahrm/%{base_pkg_name}/archive/%{latest_git_commit}/%{base_pkg_name}-%{latest_git_commit}.tar.gz
 License:        GPL-3.0-or-later
 
-BuildRequires:  qt6-qtbase-devel qt6-qtbase-static qt6-qtdeclarative-devel qt6-qt3d-devel qt6-qtspeech-devel qt6-qtsvg-devel mesa-libGL-devel glfw-devel mupdf-devel zlib-ng-compat-devel sqlite-devel gcc desktop-file-utils
+BuildRequires: pkgconfig(Qt6Core) pkgconfig(Qt6Network) pkgconfig(Qt6OpenGL) pkgconfig(Qt63DCore) pkgconfig(Qt6Qml) pkgconfig(Qt6QuickControls2) pkgconfig(Qt6QuickWidgets) pkgconfig(Qt6Svg) pkgconfig(Qt6TextToSpeech) pkgconfig(Qt6Widgets) pkgconfig(Qt6OpenGLWidgets) pkgconfig(zlib) pkgconfig(sqlite3) pkgconfig(harfbuzz) pkgconfig(glfw3) pkgconfig(dri) gcc-c++ desktop-file-utils 
+
+%if %{undefined suse_version}
+BuildRequires: qt6-qtdeclarative-devel mupdf-devel qt6-qtbase-private-devel qt6-qtbase-static
+%else
+BuildRequires: qt6-platformsupport-devel-static mupdf-devel-static qt6-gui-private-devel 
+%endif
 
 %description
 Sioyek is a PDF viewer with a focus on textbooks and research papers.
 
 %prep
-%autosetup -p1 -n %{base_pkg_name}-%{latest_git_commit}
+%autosetup -n %{base_pkg_name}-%{latest_git_commit}
 
 %build
-%cmake -DCMAKE_BUILD_TYPE=Release
+%cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_SKIP_RPATH=1
 %cmake_build
 
 %install
@@ -51,6 +58,9 @@ cp -r pdf_viewer/shaders %{buildroot}%{_datadir}/%{base_pkg_name}
 %{_datadir}/%{base_pkg_name}/shaders/*
 
 %changelog
+* Sun Jul 27 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+20250727.13.8d173d9-2
+- start building for opensuse
+
 * Sun Jul 27 2025 Donavan Campbell <vncvltvred@proton.me> - 3.0.0+20250727.13.8d173d9-2
 - build against mupdf 1.26 and minor change
 

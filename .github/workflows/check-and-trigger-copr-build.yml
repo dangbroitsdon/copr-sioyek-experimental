@@ -8,6 +8,9 @@ on:
 jobs:
   check-for-update:
     runs-on: ubuntu-latest
+    
+    outputs:
+      _match: ${{ steps.compare_hashes.outputs._match }}
 
     steps:
       - name: Checkout master
