@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     
     outputs:
-      _match: ${{ steps.compare_hashes.outputs._match }}
+      _match: ${{ steps.compare_hashes.outputs.match }}
 
     steps:
       - name: Checkout master
